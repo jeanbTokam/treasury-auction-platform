@@ -1,19 +1,37 @@
-<h2>Treasury Auctions</h2>
+<h2>Treasury Auctions Dashboard</h2>
 
-<div *ngIf="auctions.length === 0">
-  Loading data...
-</div>
+<!-- FILTER -->
+<mat-form-field appearance="outline" style="width: 300px;">
+  <input matInput (keyup)="applyFilter($event)" placeholder="Search auctions">
+</mat-form-field>
 
-<table border="1" cellpadding="10" *ngIf="auctions.length > 0">
-  <tr>
-    <th>ID</th>
-    <th>Name</th>
-    <th>Rate</th>
-  </tr>
+<!-- TABLE -->
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
-  <tr *ngFor="let a of auctions">
-    <td>{{ a.id }}</td>
-    <td>{{ a.name }}</td>
-    <td>{{ a.rate }}%</td>
-  </tr>
+  <!-- ID -->
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+  </ng-container>
+
+  <!-- NAME -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+  </ng-container>
+
+  <!-- RATE -->
+  <ng-container matColumnDef="rate">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Rate </th>
+    <td mat-cell *matCellDef="let element"> {{element.rate}}% </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
+
+<!-- PAGINATOR -->
+<mat-paginator
+  [pageSize]="5"
+  [pageSizeOptions]="[5, 10, 20]">
+</mat-paginator>
