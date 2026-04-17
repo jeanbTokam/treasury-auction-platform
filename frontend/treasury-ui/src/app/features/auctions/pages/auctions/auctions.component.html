@@ -1,0 +1,19 @@
+<h2>Treasury Auctions</h2>
+
+<div *ngIf="auctions.length === 0">
+  Loading data...
+</div>
+
+<table border="1" cellpadding="10" *ngIf="auctions.length > 0">
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Rate</th>
+  </tr>
+
+  <tr *ngFor="let a of auctions">
+    <td>{{ a.id }}</td>
+    <td>{{ a.name }}</td>
+    <td>{{ a.rate }}%</td>
+  </tr>
+</table>
