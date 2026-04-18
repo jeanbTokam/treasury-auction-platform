@@ -10,21 +10,31 @@ pipeline {
             }
         }
 
-        stage('Backend Build') {
+        stage('Build Backend') {
             steps {
                 dir('backend') {
-                    sh 'mvn clean package -DskipTests'
+                    sh './mvnw clean package -DskipTests || mvn clean package -DskipTests'
                 }
             }
         }
 
-        stage('Frontend Build') {
+        stage('Build Frontend') {
             steps {
                 dir('frontend') {
                     sh 'npm install'
                     sh 'npm run build'
                 }
             }
+        }
+
+    }
+
+    post {
+        success {
+            echo 'BUILD SUCCESS ✅'
+        }
+        failure {
+            echo 'BUILD FAILED ❌'
         }
     }
 }
