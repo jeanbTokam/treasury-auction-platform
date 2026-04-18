@@ -10,15 +10,15 @@ pipeline {
             }
         }
 
-        stage('Build Backend') {
+        stage('Backend Build (Spring Boot)') {
             steps {
                 dir('backend') {
-                    sh './mvnw clean package -DskipTests || mvn clean package -DskipTests'
+                    sh 'mvn clean package -DskipTests'
                 }
             }
         }
 
-        stage('Build Frontend') {
+        stage('Frontend Build (Angular)') {
             steps {
                 dir('frontend') {
                     sh 'npm install'
