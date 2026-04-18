@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        MAVEN_OPTS = "-Xms256m -Xmx512m"
+        NODE_OPTIONS = "--max_old_space_size=1024"
+    }
+
     stages {
 
         stage('Checkout') {
@@ -10,13 +15,21 @@ pipeline {
             }
         }
 
-        stage('PROOF') {
+        stage('Clean Workspace') {
             steps {
-                sh 'echo "🔥 PIPELINE IS RUNNING FULL CI/CD"'
+                sh 'echo "Cleaning workspace..."'
+                deleteDir()
             }
         }
 
-        stage('Build Backend (Spring Boot)') {
+        stage('Checkout Again (Fresh)') {
+            steps {
+                git branch: 'main',
+                url: 'https://github.com/jeanbTokam/treasury-auction-platform.git'
+            }
+        }
+
+        stage('Backend Build (Spring Boot)') {
             steps {
                 dir('backend/treasury-api') {
                     sh 'mvn clean package -DskipTests'
@@ -24,10 +37,17 @@ pipeline {
             }
         }
 
-        stage('Build Frontend (Angular)') {
+        stage('Frontend Install') {
             steps {
                 dir('frontend/treasury-ui') {
                     sh 'npm install'
+                }
+            }
+        }
+
+        stage('Frontend Build (Angular)') {
+            steps {
+                dir('frontend/treasury-ui') {
                     sh 'npm run build'
                 }
             }
@@ -36,10 +56,11 @@ pipeline {
 
     post {
         success {
-            echo 'BUILD SUCCESS ✅'
+            echo "PIPELINE SUCCESS ✅"
         }
+
         failure {
-            echo 'BUILD FAILED ❌'
+            echo "PIPELINE FAILED ❌"
         }
     }
 }
