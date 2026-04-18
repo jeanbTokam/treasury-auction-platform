@@ -1,5 +1,25 @@
 <h2>Treasury Auctions Dashboard</h2>
 
+<!-- KPI CARDS -->
+<div class="kpi-container">
+
+  <div class="kpi-card yield">
+    <h3>Yield</h3>
+    <p>{{ kpi.yield }}%</p>
+  </div>
+
+  <div class="kpi-card volume">
+    <h3>Volume</h3>
+    <p>{{ kpi.volume }}</p>
+  </div>
+
+  <div class="kpi-card spread">
+    <h3>Spread</h3>
+    <p>{{ kpi.spread }}%</p>
+  </div>
+
+</div>
+
 <!-- FILTER -->
 <mat-form-field appearance="outline" style="width: 300px;">
   <input matInput (keyup)="applyFilter($event)" placeholder="Search auctions">
@@ -8,29 +28,26 @@
 <!-- TABLE -->
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
-  <!-- ID -->
   <ng-container matColumnDef="id">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-    <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+    <td mat-cell *matCellDef="let a">{{ a.id }}</td>
   </ng-container>
 
-  <!-- NAME -->
   <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+    <td mat-cell *matCellDef="let a">{{ a.name }}</td>
   </ng-container>
 
-  <!-- RATE -->
   <ng-container matColumnDef="rate">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> Rate </th>
-    <td mat-cell *matCellDef="let element"> {{element.rate}}% </td>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Rate</th>
+    <td mat-cell *matCellDef="let a">{{ a.rate }}%</td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
 </table>
 
-<!-- PAGINATOR -->
 <mat-paginator
   [pageSize]="5"
   [pageSizeOptions]="[5, 10, 20]">

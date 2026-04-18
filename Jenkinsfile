@@ -10,6 +10,12 @@ pipeline {
             }
         }
 
+        stage('TEST') {
+            steps {
+                sh 'echo "PIPELINE IS RUNNING FULL BUILD"'
+            }
+        }
+
         stage('Backend Build (Spring Boot)') {
             steps {
                 dir('backend') {
@@ -26,7 +32,6 @@ pipeline {
                 }
             }
         }
-
     }
 
     post {
