@@ -8,28 +8,20 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
-            steps {
-                git branch: 'main',
-                url: 'https://github.com/jeanbTokam/treasury-auction-platform.git'
-            }
-        }
-
         stage('Clean Workspace') {
             steps {
-                sh 'echo "Cleaning workspace..."'
                 deleteDir()
             }
         }
 
-        stage('Checkout Again (Fresh)') {
+        stage('Checkout Code') {
             steps {
                 git branch: 'main',
                 url: 'https://github.com/jeanbTokam/treasury-auction-platform.git'
             }
         }
 
-        stage('Backend Build (Spring Boot)') {
+        stage('Build Backend (Spring Boot)') {
             steps {
                 dir('backend/treasury-api') {
                     sh 'mvn clean package -DskipTests'
@@ -37,7 +29,7 @@ pipeline {
             }
         }
 
-        stage('Frontend Install') {
+        stage('Install Frontend Dependencies') {
             steps {
                 dir('frontend/treasury-ui') {
                     sh 'npm install'
@@ -45,13 +37,14 @@ pipeline {
             }
         }
 
-        stage('Frontend Build (Angular)') {
+        stage('Build Frontend (Angular)') {
             steps {
                 dir('frontend/treasury-ui') {
                     sh 'npm run build'
                 }
             }
         }
+
     }
 
     post {
